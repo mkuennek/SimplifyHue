@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       mc:Ignorable="d"
+       xmlns:search="clr-namespace:SimplifyHue.App.Ui.Search"
+       xmlns:lights="clr-namespace:SimplifyHue.App.Ui.Lights"
+       xmlns:local="clr-namespace:SimplifyHue.App"
+       Title="SimplifyHue.App"
+       x:Class="SimplifyHue.App.AppShell">
+    <FlyoutItem Title="Home"
+                FlyoutDisplayOptions="AsSingleItem">
+        <Tab Title="Search">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{DynamicResource MaterialFontFamily}"
+                                 Glyph="{x:Static local:IconFont.SearchWeb}"
+                                 Size="22"
+                                 Color="Black"/>
+            </Tab.Icon>
+            <ShellContent>
+                <search:SearchPage/>
+            </ShellContent>
+        </Tab>
+        <Tab Title="Lights">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{DynamicResource MaterialFontFamily}"
+                                 Glyph="{x:Static local:IconFont.Lightbulb}"
+                                 Size="22"
+                                 Color="Black"/>
+            </Tab.Icon>
+            <ShellContent>
+                <lights:LightsPage/>
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+</Shell>

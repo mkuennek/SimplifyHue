@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:icon="clr-namespace:SimplifyHue.App"
+             xmlns:local="clr-namespace:SimplifyHue.App.Ui.Search;assembly=SimplifyHue.App"
+             mc:Ignorable="d"
+             x:Class="SimplifyHue.App.Ui.Search.SearchPage">
+    <ContentPage.BindingContext>
+        <local:SearchPageViewModel />
+    </ContentPage.BindingContext>
+    <Shell.TitleView>
+        <SearchBar Placeholder="What do you want to see?"
+                HorizontalOptions="FillAndExpand"
+                Text="{Binding SearchTerm}"
+                SearchCommand="{Binding SearchCommand}"/>
+    </Shell.TitleView>
+    <ContentPage.Content>
+        <CollectionView ItemsSource="{Binding Images}"
+                        EmptyView="Enter a term above and hit the search button">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                        Span="2" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="{Binding ImageUrl}"
+                           Aspect="AspectFill"
+                           HeightRequest="160"
+                           Margin="5"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>
