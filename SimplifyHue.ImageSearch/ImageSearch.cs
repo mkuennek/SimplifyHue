@@ -13,6 +13,7 @@ using System.Linq;
 using SimplifyHue.Shared.Model;
 using System.Net.Mime;
 using System.Net;
+using System.Web.Http;
 
 namespace SimplifyHue.Backend
 {
@@ -24,17 +25,31 @@ namespace SimplifyHue.Backend
             ILogger log,
             ExecutionContext context)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
+            // check request
+            log.LogInformation("Starting image search function");
 
             string searchTerm = req.Query["search"];
             if (string.IsNullOrEmpty(searchTerm))
             {
-                new BadRequestObjectResult("Please pass a search on the query string");
+                return new BadRequestObjectResult("Please pass a search on the query string");
             }
 
-            string apiKey = "0925e5e2fa954342a834345604c5e855";
+            log.LogInformation($"Search term is: {searchTerm}");
+
+            // get cognitive services api key from config and create image search client
+            var config = new ConfigurationBuilder()
+             .SetBasePath(context.FunctionAppDirectory)
+             .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+             .AddEnvironmentVariables()
+             .Build();
+            string apiKey = config["CognitiveServicesKey"];
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                return new InternalServerErrorResult();
+            }
             var client = new ImageSearchClient(new ApiKeyServiceClientCredentials(apiKey));
 
+            // perform image search and return result
             var searchResult = await client.Images.SearchAsync(searchTerm);
             var images = searchResult.Value.Select(searchItem => new ImageSearchItem { FullImageUrl = searchItem.ContentUrl, PreviewImageUrl = searchItem.ThumbnailUrl }).ToList();
             return new ContentResult()
